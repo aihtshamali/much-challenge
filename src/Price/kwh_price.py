@@ -28,11 +28,10 @@ class kWhPrice:
             hour_from: float,
             hour_to: float,
             ):
-
-        self.timeprices.append({
+        self.time_prices.append({"time_price": {
                                 "hour_from": hour_from,
                                 "hour_to": hour_to,
-                                "kWh_price": kWh_price})
+                                "kWh_price": kWh_price}})
 
     def getSimple(self) -> Dict:
         """
@@ -49,7 +48,7 @@ class kWhPrice:
         """
 
         data = self.getSimple()
-        data.update({"time_price": self.time_prices})
+        data.update(self.time_prices)
         return data
 
     def getkWhPrice(self) -> Dict:

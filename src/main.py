@@ -71,6 +71,7 @@ class ParseData:
                 updatedTransaction = self.typeCastTransaction(transaction)
                 charge = Charges()
                 charge.setTransaction(updatedTransaction)
+                # print(charge.evse_id)
                 self.transactions.append(charge)
         except Exception as e:
             print(
@@ -100,8 +101,8 @@ class ParseData:
                 "country_code": str(
                     transaction["CountryCode"])})
             updatedTransaction.update({
-                "evse_id": str(
-                    transaction["EVSEID"] if transaction["EVSEID"] else None)})
+                "evse_id": checkandConvertToStr(transaction,"EVSEID")})
+# //                    transaction["EVSEID"] if transaction["EVSEID"] else None)})
             updatedTransaction.update({"partner_prod_id": str(
                 transaction["Partner product ID"] if transaction["Partner product ID"] else None)})
             updatedTransaction.update({
@@ -212,8 +213,16 @@ class ParseData:
                             supplier["time_price"], "hour from"), hour_to=checkandConvertToFloat(
                             supplier["time_price"], "hour to"))
             # Add kwhObject in Supplier
-            updatedSupplier.append({"kwh": kwh})
+            updatedSupplier.update({"kwh": kwh})
         except Exception as e:
             print("Exception occured @ -> typeCastSupplier", e)
         finally:
             return updatedSupplier
+
+    def searchOneChargeByEVSEID(self,evseId: str) -> Dict:
+        for ele in self.transactions:
+            print(ele.evse_id)
+        # print([transaction for transaction in self.transactions if transaction.evse_id == evseId])
+        # return {}
+
+    
